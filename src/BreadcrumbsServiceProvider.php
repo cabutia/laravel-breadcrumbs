@@ -4,7 +4,7 @@ namespace Nova\Breadcrumbs;
 
 use Illuminate\Support\ServiceProvider;
 
-class BredcrumbsServiceProvider extends ServiceProvider
+class BreadcrumbsServiceProvider extends ServiceProvider
 {
     public function boot ()
     {
