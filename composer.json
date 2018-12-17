@@ -1,0 +1,18 @@
+{
+    "name": "nova/breadcrumbs",
+    "description": "A simple breadcrumbs manager for Nova",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Leandro Gomez",
+            "email": "leandrogrotnig11@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Nova\\Breadcrumbs\\": "src/"
+        }
+    }
+}
