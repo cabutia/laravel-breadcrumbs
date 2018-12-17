@@ -14,5 +14,12 @@
         "psr-4": {
             "Nova\\Breadcrumbs\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nova\\Breadcrumbs\\BreadcrumbsServiceProvider"
+            ]
+        }
     }
 }
