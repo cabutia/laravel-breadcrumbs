@@ -12,12 +12,22 @@ class BreadcrumbsServiceProvider extends ServiceProvider
         \View::share('__nova_breadcrumbs', $breadcrumbs);
 
         $this->registerBladeDirectives();
+        $this->publishes([
+            __DIR__ . '/config.php' => config_path('nova-breadcrumbs.php')
+        ]);
+    }
+
+    public function register ()
+    {
+        $this->mergeConfigFrom(
+            __DIR__ . '/config.php', 'nova-breadcrumbs'
+        );
     }
 
     public function registerBladeDirectives ()
     {
         \Blade::directive('breadcrumbs', function ($expression) {
-            return "<?php echo \$__nova_breadcrumbs; ?>";
+                return "<?php echo \$__nova_breadcrumbs; ?>";
         });
 
         \Blade::directive('pushBreadcrumb', function ($expression) {

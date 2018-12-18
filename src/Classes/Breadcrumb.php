@@ -14,31 +14,11 @@ class Breadcrumb
     protected $last;
     protected $first;
 
-    public function __construct ($config = null)
+    public function __construct ()
     {
         $this->html = '';
-        $this->config = $this->buildConfig($config);
+        $this->config = config('nova-breadcrumbs');
         $this->breadcrumbs =  new Collection();
-    }
-
-    protected function buildConfig ($config)
-    {
-        $defaults = [
-            'main-wrapper-class' => '__nova_breadcrumbs',
-            'first-wrapper-class' => 'nav-wrapper',
-            'second-wrapper-class' => 'col s12 no-padding',
-            'breadcrumb-common-class' => 'breadcrumb',
-            'breadcrumb-first-class' => '',
-            'breadcrumb-before-last-class' => 'grey-text',
-            'breadcrumb-last-class' => 'cyan-text'
-        ];
-        if (!$config || !count($config) > 0) return $defaults;
-        foreach ($config as $key => $value) {
-            if (isset($defaults[$key])) {
-                $defaults[$key] = $value;
-            }
-        }
-        return $defaults;
     }
 
     public function __toString ()
@@ -56,27 +36,29 @@ class Breadcrumb
 
     protected function _init ()
     {
-        $this->html .= '<nav class="'. $this->config['main-wrapper-class'] .'">';
-        $this->html .= '<div class="'. $this->config['first-wrapper-class'] .'">';
-        $this->html .= '<div class="'. $this->config['second-wrapper-class'] .'">';
+        $this->html .= '<div class="'. $this->config['wrapper-class'] .'">';
+        $this->html .= '<ol class="'. $this->config['list-class'] .'">';
     }
 
     protected function _end ()
     {
+        $this->html .= '</ol>';
         $this->html .= '</div>';
-        $this->html .= '</div>';
-        $this->html .= '</nav>';
     }
 
     protected function buildContent ()
     {
         foreach ($this->breadcrumbs as $breadcrumb) {
-            $this->html .= '<a href="'. $breadcrumb['route'] .'" class="';
+            $this->html .= '<li  class="';
             $this->html .= $this->config['breadcrumb-common-class'] . ' ';
             $this->html .= $this->first == $breadcrumb ? ($this->config['breadcrumb-first-class'] . ' ') : '';
             $this->html .= $this->last !== $breadcrumb ? ($this->config['breadcrumb-before-last-class'] . ' ') : '';
             $this->html .= $this->last == $breadcrumb ? ($this->config['breadcrumb-last-class'] . ' ') : ' ';
-            $this->html .= '">' . $breadcrumb['display'] . '</a>';
+            $this->html .= '">';
+            $this->html .= '<a href="'. ($this->last == $breadcrumb ? '#' : $breadcrumb['route']) .'">';
+            $this->html .= $breadcrumb['display'];
+            $this->html .= '</a>';
+            $this->html .= '</li>';
         }
     }
 
