@@ -36,29 +36,37 @@ class Breadcrumb
 
     protected function _init ()
     {
-        $this->html .= '<div class="'. $this->config['wrapper-class'] .'">';
-        $this->html .= '<ol class="'. $this->config['list-class'] .'">';
+        $this->html .= $this->config['wrapper'] ? '<div class="'. $this->config['wrapper-class'] .'">' : '';
+        $this->html .= '<'. $this->config['list-element'] .' class="'. $this->config['list-class'] .'">';
     }
 
     protected function _end ()
     {
-        $this->html .= '</ol>';
-        $this->html .= '</div>';
+        $this->html .= '</'. $this->config['list-element'] .'>';
+        $this->html .= $this->config['wrapper'] ? '</div>' : '';
     }
 
     protected function buildContent ()
     {
         foreach ($this->breadcrumbs as $breadcrumb) {
-            $this->html .= '<li  class="';
-            $this->html .= $this->config['breadcrumb-common-class'] . ' ';
-            $this->html .= $this->first == $breadcrumb ? ($this->config['breadcrumb-first-class'] . ' ') : '';
-            $this->html .= $this->last !== $breadcrumb ? ($this->config['breadcrumb-before-last-class'] . ' ') : '';
-            $this->html .= $this->last == $breadcrumb ? ($this->config['breadcrumb-last-class'] . ' ') : ' ';
+            $_is_first = $this->first == $breadcrumb;
+            $_not_last = $this->last !== $breadcrumb;
+            $_is_last = $this->last == $breadcrumb;
+            $this->html .= '<'. $this->config['item-element'] .' class="';
+            $this->html .= $this->config['breadcrumb']['common'] . ' ';
+            $this->html .= $_is_first ? ($this->config['breadcrumb']['first'] . ' ') : '';
+            $this->html .= $_not_last ? ($this->config['breadcrumb']['before-last'] . ' ') : '';
+            $this->html .= $_is_last ? ($this->config['breadcrumb']['last'] . ' ') : ' ';
             $this->html .= '">';
-            $this->html .= '<a href="'. ($this->last == $breadcrumb ? '#' : $breadcrumb['route']) .'">';
+            $this->html .= '<a href="'. ($this->last == $breadcrumb ? '#' : $breadcrumb['route']) .'" class="';
+            $this->html .= $this->config['anchor']['common'] . ' ';
+            $this->html .= $_is_first ? ($this->config['anchor']['first'] . ' ') : '';
+            $this->html .= $_not_last ? ($this->config['anchor']['before-last'] . ' ') : '';
+            $this->html .= $_is_last ? ($this->config['anchor']['last'] . ' ') : ' ';
+            $this->html .= '">';
             $this->html .= $breadcrumb['display'];
             $this->html .= '</a>';
-            $this->html .= '</li>';
+            $this->html .= '</'. $this->config['item-element'] .'>';
         }
     }
 
